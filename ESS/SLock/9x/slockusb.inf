@@ -1,0 +1,69 @@
+; Installation inf for the Intel 82930 USB slock IO Test Board
+;
+
+[Version]
+Signature="$CHICAGO$"
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+provider=%MSFT%
+DriverVer=08/05/1999
+
+[SourceDisksNames]
+1="slockUsb Installation Disk",,,
+
+[SourceDisksFiles]
+SLOCKUSB.sys = 1
+SLOCKUSB.inf = 1
+
+[Manufacturer]
+%MfgName%=DeaA
+
+[DeaA]
+%USB\VID_1457&PID_0001.DeviceDesc%=SLOCKUSB.Dev, USB\VID_1457&PID_0001
+
+;[PreCopySection]
+;HKR,,NoSetupUI,,1
+
+[DestinationDirs]
+SLOCKUSB.Files.Ext = 10,System32\Drivers
+SLOCKUSB.Files.Inf = 10,INF
+
+[SLOCKUSB.Dev]
+CopyFiles=SLOCKUSB.Files.Ext, SLOCKUSB.Files.Inf
+AddReg=SLOCKUSB.AddReg
+
+[SLOCKUSB.Dev.NT]
+CopyFiles=SLOCKUSB.Files.Ext, SLOCKUSB.Files.Inf
+AddReg=SLOCKUSB.AddReg
+
+[SLOCKUSB.Dev.NT.Services]
+Addservice = SLOCKUSB, 0x00000002, SLOCKUSB.AddService
+
+[SLOCKUSB.AddService]
+DisplayName    = %SLOCKUSB.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\SLOCKUSB.sys
+LoadOrderGroup = Base
+
+[SLOCKUSB.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,SLOCKUSB.sys
+HKLM,"System\Currentcontrolset\Services\SlockUsb\Parameters","MaximumTransferSize",0x10001,4096
+HKLM,"System\Currentcontrolset\Services\SlockUsb\Parameters","DebugLevel",0x10001,2
+HKLM,"System\Currentcontrolset\services\SlockUsb\Parameters","SLOCKUsbEnable",0x10001,1
+
+[SLOCKUSB.Files.Ext]
+SLOCKUSB.sys
+
+[SLOCKUSB.Files.Inf]
+SlockUsb.Inf
+
+;---------------------------------------------------------------;
+[Strings]
+MSFT="DeaA"
+MfgName="DeaA"
+USB\VID_1457&PID_0001.DeviceDesc="DAE-A USB Lock"
+SLOCKUSB.SvcDesc="suLock.Sys USB Lock Device Driver"
+

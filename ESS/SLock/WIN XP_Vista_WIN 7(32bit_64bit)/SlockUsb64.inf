@@ -1,0 +1,63 @@
+
+[Version]
+Signature="$CHICAGO$"
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+provider=%MSFT%
+DriverVer=06/14/2010,2.00
+CatalogFILE=SlockUSB64.cat
+
+[SourceDisksNames]
+1=%Disk_Description%,,,
+
+[SourceDisksFiles]
+SLockUsb64.sys = 1
+
+[Manufacturer]
+%MfgName%=DeaA, NTia64, NTamd64
+
+[DeaA]
+%USB\VID_1457&PID_0001.DeviceDesc%=SLockUsb64.Dev, USB\VID_1457&PID_0001
+
+[DeaA.NTia64]
+%USB\VID_1457&PID_0001.DeviceDesc%=SLockUsb64.Dev, USB\VID_1457&PID_0001
+
+[DeaA.NTamd64]
+%USB\VID_1457&PID_0001.DeviceDesc%=SLockUsb64.Dev, USB\VID_1457&PID_0001
+
+[DestinationDirs]
+SLockUsb64.Files.Ext = 10,System32\Drivers
+
+[SLockUsb64.Dev.NT]
+CopyFiles=SLockUsb64.Files.Ext
+
+[SLockUsb64.Dev.NT.Services]
+Addservice = SLockUsb64, 0x00000002, SLockUsb64.AddService
+
+[SLockUsb64.AddService]
+DisplayName    = %SLockUsb64.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\SLockUsb64.sys
+AddReg         = SLockUsb64.AddReg
+LoadOrderGroup = Base
+
+[SLockUsb64.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,SLockUsb64.sys
+HKR,"Parameters","MaximumTransferSize",0x10001,4096
+HKR,"Parameters","DebugLevel",0x10001,2
+HKR,"Parameters","SLockUsb64Enable",0x10001,1
+
+[SLockUsb64.Files.Ext]
+SLockUsb64.sys
+
+;---------------------------------------------------------------;
+
+[Strings]
+MSFT="DeaA"
+MfgName="DeaA"
+Disk_Description="SLockUsb64 Installation Disk"
+USB\VID_1457&PID_0001.DeviceDesc="DAE-A USB Lock"
+SLockUsb64.SvcDesc="SlockUsb64.sys USB Lock Device Driver"
